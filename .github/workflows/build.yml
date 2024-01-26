@@ -61,5 +61,4 @@ jobs:
            tag_name: ${{ github.ref }}
            release_name: Release ${{ github.ref }}
            body: "Release notes for ${{ github.ref }}"
-           env:
            GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
