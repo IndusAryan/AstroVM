@@ -1,0 +1,52 @@
+name: Build and Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+
+      - name: Build with Gradle
+        run: ./gradlew build
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+
+      - name: Build Release APK
+        run: |
+          echo "$KEYSTORE_FILE" > keystore.jks
+          echo "storePassword=$KEYSTORE_PASSWORD" > keystore.properties
+          echo "keyAlias=$KEY_ALIAS" >> keystore.properties
+          echo "keyPassword=$KEY_PASSWORD" >> keystore.properties
+          
+          ./gradlew bundleRelease -PkeystoreProperties=keystore.properties
+
+      - name: Upload Release APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: app-release
+          path: app/build/outputs/bundle/release/
