@@ -1,0 +1,51 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory app:title="Theme">
+
+        <SwitchPreferenceCompat
+            app:defaultValue="true"
+            app:key="dark_mode"
+            app:title="Dark Theme"
+            app:icon="@drawable/moon_svgrepo_com"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="About">
+
+        <Preference
+            app:title="Source code"
+            app:key="source"
+            app:icon="@drawable/github_142_svgrepo_com">
+        </Preference>
+
+        <Preference
+            android:title="Check update"
+            app:key="update"
+            android:summary="v1.0"
+            app:icon="@drawable/baseline_update_24"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="Device info">
+
+        <Preference
+            app:key="deviceInfo"
+            app:icon="@drawable/ic_android_black_24dp"
+            app:summary="Info">
+        </Preference>
+
+    <PreferenceCategory app:title="Experimental">
+
+        <Preference
+            app:key="crash"
+            app:icon="@drawable/ic_warning"
+            app:title="Crash the App!">
+        </Preference>
+
+    </PreferenceCategory>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

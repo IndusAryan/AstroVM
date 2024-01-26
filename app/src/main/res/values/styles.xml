@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:navigationBarColor">?attr/primaryBlackBackground</item>
+        <item name="android:colorEdgeEffect">?attr/textColor</item>
+
+        <!--<item name="android:navigationBarColor">@color/darkBackground</item>-->
+        <item name="android:statusBarColor">?attr/iconGrayBackground</item>
+
+        <item name="android:scrollbarThumbVertical">@null</item>
+        <item name="android:scrollbarThumbHorizontal">@null</item>
+
+        <item name="android:windowTranslucentStatus">true</item> <!--true-->
+        <item name="android:windowTranslucentNavigation">false</item>
+
+        <item name="android:divider">@color/transparent</item>
+        <item name="divider">@color/transparent</item>
+        <item name="android:dividerHeight">0dp</item>
+        <item name="showDividers">none</item>
+
+        <item name="android:colorControlHighlight">?attr/grayTextColor</item> <!--iconRipple-->
+
+        <item name="android:windowAllowReturnTransitionOverlap">true</item>
+        <item name="android:windowAllowEnterTransitionOverlap">true</item>
+        <!--<item name="preferenceTheme">@style/PreferencesTheme</item>-->
+
+        <!-- DEF STYLE -->
+        <item name="colorPrimary">@color/colorPrimaryOrange</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryOrange</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="textColor">@color/textColor</item>
+        <item name="colorOnPrimary">@color/whiteText</item>
+        <item name="grayTextColor">@color/grayTextColor</item>
+        <item name="primaryGrayBackground">@color/primaryGrayBackground</item>
+        <item name="primaryBlackBackground">@color/primaryBlackBackground</item>
+        <item name="iconGrayBackground">@color/iconGrayBackground</item>
+        <item name="boxItemBackground">@color/boxItemBackground</item>
+        <item name="iconColor">@color/iconColor</item>
+        <item name="white">@color/white</item>
+        <item name="black">@color/black</item>
+    </style>
+
+    <style name="SettingStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:layout_margin">20dp</item>
+        <item name="android:textAlignment">textStart</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:foreground">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:gravity">center</item>
+    </style>
+</resources>

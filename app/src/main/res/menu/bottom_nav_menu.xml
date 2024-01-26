@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/sun_svgrepo_com"
+        android:title="Sunsign" />
+
+    <item
+        android:id="@+id/navigation_moon"
+        android:icon="@drawable/moon_svgrepo_com"
+        android:title="Moonsign" />
+
+    <item
+        android:id="@+id/navigation_settings"
+        android:icon="@drawable/settings_minimalistic_svgrepo_com_1_"
+        android:title="@string/title_settings" />
+
+</menu>

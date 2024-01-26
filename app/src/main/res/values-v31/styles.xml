@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme.MaterialYou" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Define Material You specific attributes here -->
+        <item name="colorPrimary">@color/material_dynamic_primary80</item>
+        <item name="colorPrimaryDark">@color/material_dynamic_primary50</item>
+        <item name="android:navigationBarColor">?attr/iconGrayBackground</item>
+        <item name="android:statusBarColor">?attr/iconGrayBackground</item>
+        <!-- Add other Material You specific attributes as needed -->
+    </style>
+
+
+</resources>
