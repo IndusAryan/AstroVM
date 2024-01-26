@@ -20,7 +20,9 @@ jobs:
           java-version: '17'
 
       - name: Build with Gradle
-        run: ./gradlew build
+        run: |
+          chmod +x ./gradlew
+          ./gradlew build
 
   release:
     needs: build
