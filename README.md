@@ -13,13 +13,13 @@ AstroVM is a slick Zodiac sign calculator for Android, designed to provide users
 
 <div style="display:flex; justify-content:space-between;">
   <img src="raw/1.png" alt="Screenshot 1" width="200" />
-  <img src="raw/2.png" alt="Screenshot 2" width="200" />
+  <img src="raw/5.png" alt="Screenshot 5" width="200" />
   <img src="raw/3.jpg" alt="Screenshot 3" width="200" />
 </div>
 
 <div style="display:flex; justify-content:space-between;">
   <img src="raw/4.jpg" alt="Screenshot 4" width="200" />
-  <img src="raw/5.jpg" alt="Screenshot 5" width="200" />
+ <img src="raw/2.png" alt="Screenshot 2" width="200" />
 </div>
 
 ### API's used:
