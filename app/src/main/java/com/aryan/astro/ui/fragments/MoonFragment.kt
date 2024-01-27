@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import android.widget.VideoView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -23,8 +24,10 @@ import com.aryan.astro.ui.models.MoonViewModel
 import com.aryan.astro.utils.DatePicker
 import com.aryan.astro.utils.TimePicker
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.Locale
 
 @SuppressLint("SetTextI18n")
@@ -83,19 +86,28 @@ class MoonFragment : Fragment() {
                         Locale.ROOT
                     ) else it.toString()
                 }
+
                 lifecycleScope.launch(Dispatchers.IO) {
 
                     try {
                         timezone = TimezoneAPI().getTimezone(city)
-                        activity?.runOnUiThread {
+                        withContext(Dispatchers.Main) {
                             textView.text = "$timezone $city"
                         }
 
                         fetchMoonSign()
 
                     } catch (e: Exception) {
-                        e.printStackTrace()
-                        binding.loading.isVisible = false
+                        withContext(Dispatchers.Main) {
+                            binding.loading.isVisible = false
+                            Toast.makeText(context,
+                                "City not found or network error", Toast.LENGTH_LONG).show()
+                            cancel()
+                        }
+                    } finally {
+                        withContext(Dispatchers.Main) {
+                            cancel()
+                        }
                     }
                 }
             }
