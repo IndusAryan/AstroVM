@@ -11,24 +11,21 @@ AstroVM is a slick Zodiac sign calculator for Android, designed to provide users
 
 ## Screenshots
 
-![Screenshot 1](raw/1.png)
-*Sunsign*
+<div style="display:flex; justify-content:space-between;">
+  <img src="raw/1.png" alt="Screenshot 1" width="200" />
+  <img src="raw/5.png" alt="Screenshot 5" width="200" />
+  <img src="raw/3.jpg" alt="Screenshot 3" width="200" />
+</div>
 
-![Screenshot 2](raw/2.png)
-*Moonsign*
-
-![Screenshot 3](raw/3.jpg)
-*Settings*
-
-![Screenshot 4](raw/4.jpg)
-*Result Page*
-
-![Screenshot 5](raw/5.png)
-*Alt Result Page*
+<div style="display:flex; justify-content:space-between;">
+  <img src="raw/4.jpg" alt="Screenshot 4" width="200" />
+ <img src="raw/2.png" alt="Screenshot 2" width="200" />
+</div>
 
 ### API's used:
 
 #1) Api Ninja's [TimezoneAPI](https://api-ninjas.com/api/timezone) : To calculate Timezone of user's City.
+
 #2) Ved Astro's [RashiAPI](https://github.com/VedAstro/VedAstro) : To calculate position of moon, do star ⭐ this awesome repository.
 
 ## Getting Started
