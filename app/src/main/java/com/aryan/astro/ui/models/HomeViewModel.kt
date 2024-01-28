@@ -1,5 +1,6 @@
 package com.aryan.astro.ui.models
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,7 +20,8 @@ class HomeViewModel : ViewModel() {
 
     fun getSunSign(dob: CharSequence): String {
 
-        val (year, month, day) = dob.split('/').map { it.toInt() }
+        val (day, month, year) = dob.split('/').map { it.toInt() }
+        Log.d("DOB_Debug", "Input date: Day=$day, Month=$month, Year=$year")
 
         return when (month) {
             1 -> if (day >= 20) "Aquarius" else "Capricorn"
