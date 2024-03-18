@@ -1,5 +1,6 @@
 package com.aryan.astro.ui.fragments
 
+import com.aryan.astro.db.DataStoreHelper
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.aryan.astro.databinding.FragmentHomeBinding
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
@@ -18,6 +18,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import com.aryan.astro.helpers.IntentHelper
 import com.aryan.astro.R
+import com.aryan.astro.databinding.FragmentHomeBinding
 import com.aryan.astro.ui.models.HomeViewModel
 import com.aryan.astro.utils.DatePicker
 import com.google.android.material.button.MaterialButton
@@ -27,9 +28,9 @@ class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private lateinit var homeViewModel: HomeViewModel
-    private lateinit var btnDatePicker: MaterialButton
-    private lateinit var tvSelectedDate: TextView
-    private lateinit var coverImage: ImageView
+    private var btnDatePicker: MaterialButton? = null
+    private var tvSelectedDate: TextView? = null
+    private var coverImage: ImageView? = null
     private val binding get() = _binding!!
 
     @SuppressLint("SetTextI18n", "DiscouragedApi")
@@ -48,13 +49,16 @@ class HomeFragment : Fragment() {
         homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         homeViewModel.getSelectedDate().observe(viewLifecycleOwner) { selectedDate ->
 
-            tvSelectedDate.text = "Selected Date: $selectedDate"
+            tvSelectedDate?.text = "Selected Date: $selectedDate"
 
             binding.calculate.setOnClickListener {
                 if (selectedDate != null) {
 
                     val sunSign = homeViewModel.getSunSign(selectedDate)
                     Toast.makeText(activity, sunSign, Toast.LENGTH_SHORT).show()
+
+                    val saveSunsign = DataStoreHelper(requireContext())
+                    saveSunsign.saveData("SunSign -> $sunSign $selectedDate")
 
                     val sunSignResourceId = resources.getIdentifier(sunSign.lowercase(Locale.ROOT),
                         "string", requireContext().packageName)
@@ -84,7 +88,7 @@ class HomeFragment : Fragment() {
         animateCover()
         btnDatePicker = binding.btnDatePicker
         tvSelectedDate = binding.tvSelectedDate
-        btnDatePicker.setOnClickListener {
+        btnDatePicker?.setOnClickListener {
             showDatePicker()
         }
     }
@@ -105,12 +109,8 @@ class HomeFragment : Fragment() {
         })
     }
 
+    @SuppressLint("ObjectAnimatorBinding", "Recycle")
     private fun animateView() {
-        // Translation Animation: Move to the right
-        /*val translationXRight = ObjectAnimator.ofFloat(coverImage, "translationX", 0f, 200f)
-        translationXRight.duration = 1000
-        translationXRight.interpolator = DecelerateInterpolator()*/
-
         // Translation Animation: Move back to the left
         val translationXLeft = ObjectAnimator.ofFloat(coverImage, "translationX", 200f, 0f)
         translationXLeft.duration = 10000
@@ -137,7 +137,6 @@ class HomeFragment : Fragment() {
         // Combine animations in a sequence
         val animatorSet = AnimatorSet()
         animatorSet.playSequentially(
-            //translationXRight,  // Move to the right
             scaleXIn,           // Zoom in
             translationXLeft,   // Move back to the left
             scaleXOut           // Zoom out

@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import android.widget.Toast.LENGTH_SHORT
 import android.widget.VideoView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -19,6 +20,7 @@ import com.aryan.astro.R
 import com.aryan.astro.api.TimezoneAPI
 import com.aryan.astro.api.VedAstroAPI
 import com.aryan.astro.databinding.FragmentMoonBinding
+import com.aryan.astro.db.DataStoreHelper
 import com.aryan.astro.helpers.IntentHelper
 import com.aryan.astro.ui.models.MoonViewModel
 import com.aryan.astro.utils.DatePicker
@@ -39,13 +41,13 @@ class MoonFragment : Fragment() {
     private var simpleVideoView: VideoView? = null
     private var _binding: FragmentMoonBinding? = null
 
-    private lateinit var day: Any
-    private lateinit var month: Any
-    private lateinit var bornCity: Any
-    private lateinit var year: Any
-    private lateinit var birthTime: String
+    private var day: Any? = null
+    private var month: Any? = null
+    private var bornCity: Any? = null
+    private var year: Any? = null
+    private var birthTime: String? = null
     private lateinit var moonSymbol: String
-    private lateinit var btnDatePicker: Button
+    private var btnDatePicker: Button? = null
     private lateinit var btnSelectTime: Button
     private lateinit var tvSelectedDate: TextView
     private lateinit var moonViewModel: MoonViewModel
@@ -76,40 +78,9 @@ class MoonFragment : Fragment() {
             month = splitDOB[1]
             year = splitDOB[2]
 
-            //Toast.makeText(context, "$day + $month + $year + $selectedDate", Toast.LENGTH_LONG).show()
+            //Toast.makeText(context, "$day $month $year $selectedDate", LENGTH_LONG).show()
             binding.calculate.setOnClickListener {
-
-                binding.loading.isVisible = true
-                //Toast.makeText(context, "$bornCity", Toast.LENGTH_LONG).show()
-                val city = bornCity.toString().replaceFirstChar {
-                    if (it.isLowerCase()) it.titlecase(
-                        Locale.ROOT
-                    ) else it.toString()
-                }
-
-                lifecycleScope.launch(Dispatchers.IO) {
-
-                    try {
-                        timezone = TimezoneAPI().getTimezone(city)
-                        withContext(Dispatchers.Main) {
-                            textView.text = "$timezone $city"
-                        }
-
-                        fetchMoonSign()
-
-                    } catch (e: Exception) {
-                        withContext(Dispatchers.Main) {
-                            binding.loading.isVisible = false
-                            Toast.makeText(context,
-                                "City not found or network error", Toast.LENGTH_LONG).show()
-                            cancel()
-                        }
-                    } finally {
-                        withContext(Dispatchers.Main) {
-                            cancel()
-                        }
-                    }
-                }
+                calculateMoonSign()
             }
         }
 
@@ -121,12 +92,53 @@ class MoonFragment : Fragment() {
         btnDatePicker = binding.btnDatePicker
         tvSelectedDate = binding.tvSelectedDate
         bornCity = binding.inputCity.editText?.text ?: null!!
-        btnDatePicker.setOnClickListener {
+        btnDatePicker?.setOnClickListener {
             showDatePicker()
         }
         btnSelectTime = binding.btnSelectTime
         btnSelectTime.setOnClickListener{
             showTimePicker()
+        }
+    }
+
+    private fun calculateMoonSign() {
+        if (tvSelectedDate.text.isNullOrEmpty()) {
+            Toast.makeText(context, "Please enter date of birth", LENGTH_SHORT).show()
+        } else if (birthTime.isNullOrEmpty()) {
+            Toast.makeText(context, "Please enter time of birth", LENGTH_SHORT).show()
+        }
+        else {
+            binding.loading.isVisible = true
+            //Toast.makeText(context, "$bornCity", LENGTH_LONG).show()
+            val city = bornCity.toString().replaceFirstChar {
+                if (it.isLowerCase()) it.titlecase(
+                    Locale.ROOT
+                ) else it.toString()
+            }
+
+            lifecycleScope.launch(Dispatchers.IO) {
+                val textView: TextView = binding.parsedData
+                try {
+                    timezone = TimezoneAPI().getTimezone(city)
+                    withContext(Dispatchers.Main) {
+                        textView.text = "$timezone $city"
+                    }
+                    fetchMoonSign()
+                } catch (e: Exception) {
+                    withContext(Dispatchers.Main) {
+                        binding.loading.isVisible = false
+                        Toast.makeText(
+                            context,
+                            "City not found or network error", Toast.LENGTH_LONG
+                        ).show()
+                        cancel()
+                    }
+                } finally {
+                    withContext(Dispatchers.Main) {
+                        cancel()
+                    }
+                }
+            }
         }
     }
 
@@ -154,18 +166,19 @@ class MoonFragment : Fragment() {
         lifecycleScope.launch(Dispatchers.IO) {
             moonSignFetcher.fetchMoonSign(
                 bornCity = city,
-                birthTime = birthTime,
-                day = day,
-                month = month,
-                year = year,
+                birthTime = birthTime?: "",
+                day = day ?: "01",
+                month = month ?: "01",
+                year = year ?:"01",
                 timezone = timezone ?: "",
                 onMoonSignFetched = { moonSign ->
                     if (isActive) {
                         moonSymbol = moonSign
                         showResult()
+                        DataStoreHelper(requireContext()).saveData(
+                            "MoonSign -> $moonSign $day/$month/$year")
                     }
                 }
-
             ) { errorMessage ->
                 if (isActive) {
                     Log.e("TAG", errorMessage)

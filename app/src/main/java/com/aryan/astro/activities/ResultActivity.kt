@@ -60,7 +60,7 @@ class ResultActivity : AppCompatActivity() {
 
         if (bitmap != null) {
             val bytes = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.PNG, 50, bytes)
+            bitmap.compress(Bitmap.CompressFormat.PNG, 10, bytes)
             val path = MediaStore.Images.Media.insertImage(contentResolver, bitmap, "Title", null)
             return Uri.parse(path)
         }
