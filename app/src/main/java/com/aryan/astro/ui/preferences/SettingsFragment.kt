@@ -46,7 +46,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         val update: Preference? = findPreference("update")
         update?.setOnPreferenceClickListener {
-            Snackbar.make(requireContext(), requireView(), "App is up to date", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(context?: return@setOnPreferenceClickListener false, view ?: return@setOnPreferenceClickListener false, "App is up to date", Snackbar.LENGTH_SHORT).show()
             true
         }
 
@@ -68,7 +68,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val historyPreference: Preference? = findPreference("history")
         historyPreference?.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
-                val settingsDataStore = DataStoreHelper(context ?: requireContext())
+                val settingsDataStore = DataStoreHelper(context ?: return@OnPreferenceClickListener false)
                 val historyList = settingsDataStore.getData()?.split(", ") ?: emptyList()
                 if (historyList.isEmpty()) {
                     showHistoryDialog(listOf("Empty"))

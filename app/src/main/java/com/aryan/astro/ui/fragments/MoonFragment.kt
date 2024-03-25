@@ -124,7 +124,7 @@ class MoonFragment : Fragment() {
                         textView.text = "$timezone $city"
                     }
                     fetchMoonSign()
-                } catch (e: Exception) {
+                } catch (t: Throwable) {
                     withContext(Dispatchers.Main) {
                         binding.loading.isVisible = false
                         Toast.makeText(
@@ -143,14 +143,14 @@ class MoonFragment : Fragment() {
     }
 
     private fun showDatePicker() {
-        DatePicker.showDatePicker(requireContext()) { selectedDate ->
+        DatePicker.showDatePicker(context ?: return) { selectedDate ->
             moonViewModel.setSelectedDate(selectedDate)
             if (selectedDate.isNotEmpty()) { binding.tvSelectedDate.isVisible = true }
         }
     }
 
     private fun showTimePicker() {
-        TimePicker.showTimePicker(requireContext()) { selectedTime ->
+        TimePicker.showTimePicker(context ?: return) { selectedTime ->
             binding.timeSelected.text = "Time of Birth: $selectedTime"
             birthTime = selectedTime
             //selectedTime.split(":")
@@ -175,13 +175,16 @@ class MoonFragment : Fragment() {
                     if (isActive) {
                         moonSymbol = moonSign
                         showResult()
-                        DataStoreHelper(requireContext()).saveData(
-                            "MoonSign -> $moonSign $day/$month/$year")
+                        context.let {
+                            DataStoreHelper(context?: requireContext()).saveData(
+                                "MoonSign -> $moonSign $day/$month/$year"
+                            )
+                        }
                     }
                 }
             ) { errorMessage ->
                 if (isActive) {
-                    Log.e("TAG", errorMessage)
+                    Log.e("FetchMoonSign", errorMessage)
                     binding.loading.isVisible = false
                 }
             }
@@ -190,17 +193,21 @@ class MoonFragment : Fragment() {
 
     @SuppressLint("DiscouragedApi")
     private fun showResult() {
-        val moonSignResourceId = resources.getIdentifier(moonSymbol, "string", requireContext().packageName)
+        val moonSignResourceId = resources.getIdentifier(moonSymbol, "string", context?.packageName)
         val moonSignDescription = if (moonSignResourceId != 0) {
             getString(moonSignResourceId)} else {
             // Default string in case the resource is not found
             getString(R.string.zodDesc)
         }
 
-        val moonSignImageId= resources.getIdentifier(moonSymbol.lowercase(), "drawable", requireContext().packageName)
+        val moonSignImageId= resources.getIdentifier(
+            moonSymbol.lowercase(),
+            "drawable",
+            context?.packageName
+        )
 
         intentHelper.showResultActivity(
-            context = requireContext(),
+            context = context ?: return,
             description = moonSignDescription,
             imageResource = moonSignImageId
         )
@@ -209,7 +216,7 @@ class MoonFragment : Fragment() {
     private fun animatedCover() {
         simpleVideoView = binding.mooncover
         simpleVideoView?.setVideoURI(
-            Uri.parse("android.resource://" + requireContext().packageName + "/" + R.raw.covermoon))
+            Uri.parse("android.resource://" + context?.packageName + "/" + R.raw.covermoon))
         simpleVideoView?.start()
         simpleVideoView?.setOnPreparedListener { mp -> mp.isLooping = true }
     }

@@ -6,13 +6,13 @@ import com.google.gson.Gson
 import kotlinx.coroutines.coroutineScope
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import java.io.IOException
 
 class TimezoneAPI {
 
     private val apiUrl = "https://api.api-ninjas.com/v1/timezone"
     private val gson = Gson()
     private var client = OkHttpClient()
+    private val TAG = "TZApi"
 
     suspend fun getTimezone(city: String): String {
         val requestUrl = "$apiUrl?city=$city"
@@ -32,15 +32,15 @@ class TimezoneAPI {
                         gson.fromJson(responseBody, TimezoneResponse::class.java)
                     val timezone = timezoneResponse.timezone.replace("/", ":")
 
-                    Log.d("TAG", "$responseBody")
+                    Log.d(TAG, "$responseBody")
                     timezone
 
                 } else {
                     throw Exception("API request failed with code: ${response.code}")
                 }
             }
-        } catch (e: IOException) {
-            throw Exception("Network error occurred: ${e.message}")
+        } catch (t: Throwable) {
+            throw Exception("Network error occurred: ${t.message}")
         }
     }
 }

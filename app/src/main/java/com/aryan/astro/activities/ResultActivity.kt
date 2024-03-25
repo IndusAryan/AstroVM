@@ -46,13 +46,14 @@ class ResultActivity : AppCompatActivity() {
             val shareIntent = Intent(Intent.ACTION_SEND).apply {
                 putExtra(Intent.EXTRA_TEXT, "$description")
                 putExtra(Intent.EXTRA_STREAM, getImageUriFromBitmap(bitmap))
-                type = "image/*"
-            }
+               type = "image/*"
+        }
 
             val chooserIntent =
                 Intent.createChooser(shareIntent, "Share with")
             startActivity(chooserIntent)
         }
+
     }
 
     @Suppress("DEPRECATION")

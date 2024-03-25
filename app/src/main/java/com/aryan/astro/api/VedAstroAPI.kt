@@ -5,12 +5,12 @@ import com.aryan.astro.obj.AstroApiResponse
 import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import java.io.IOException
 
 class VedAstroAPI {
 
     private val client = OkHttpClient()
-
+    private val TAG = "AstroAPI" +
+            ""
     fun fetchMoonSign(
         bornCity: String,
         birthTime: String,
@@ -36,7 +36,7 @@ class VedAstroAPI {
             if (response.isSuccessful) {
                 val astroResponse = response.body?.string()
                 if (astroResponse != null) {
-                    Log.d("a", astroResponse)
+                    Log.d(TAG, astroResponse)
                 }
 
                 // Check if the JSON response is not null
@@ -48,18 +48,18 @@ class VedAstroAPI {
                     if (moonSign.isNotEmpty()) {
                         onMoonSignFetched(moonSign)
                     } else {
-                        Log.d("TAG", astroAPI)
-                        Log.e("TAG", "$astroAPIResponse")
+                        Log.d(TAG, astroAPI)
+                        Log.e(TAG, "$astroAPIResponse")
                         onError("Moon sign not found.")
                     }
                 } else {
-                    Log.d("TAG", astroAPI)
-                    Log.e("TAG", "$response")
+                    Log.d(TAG, astroAPI)
+                    Log.e(TAG, "$response")
                     onError("Empty response.")
                 }
             }
-        } catch (e: IOException) {
-            e.printStackTrace()
+        } catch (t: Throwable) {
+            t.printStackTrace()
             onError("Error fetching moon sign.")
         }
     }
