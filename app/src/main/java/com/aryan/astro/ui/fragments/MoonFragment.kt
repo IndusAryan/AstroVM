@@ -161,33 +161,38 @@ class MoonFragment : Fragment() {
         val city = bornCity.toString().replaceFirstChar {
             if (it.isLowerCase()) it.titlecase() else it.toString()
         }
+        Log.i("MF", "$birthTime $bornCity $day $month $year &$timezone")
         //binding.loading.isVisible = true
-
-        lifecycleScope.launch(Dispatchers.IO) {
-            moonSignFetcher.fetchMoonSign(
-                bornCity = city,
-                birthTime = birthTime?: "",
-                day = day ?: "01",
-                month = month ?: "01",
-                year = year ?:"01",
-                timezone = timezone ?: "",
-                onMoonSignFetched = { moonSign ->
-                    if (isActive) {
-                        moonSymbol = moonSign
-                        showResult()
-                        context.let {
-                            DataStoreHelper(context?: requireContext()).saveData(
-                                "MoonSign -> $moonSign $day/$month/$year"
-                            )
+        try {
+            lifecycleScope.launch(Dispatchers.IO) {
+                moonSignFetcher.fetchMoonSign(
+                    bornCity = city,
+                    birthTime = birthTime ?: "",
+                    day = day ?: "01",
+                    month = month ?: "01",
+                    year = year ?: "01",
+                    timezone = timezone ?: "",
+                    onMoonSignFetched = { moonSign ->
+                        if (isActive) {
+                            moonSymbol = moonSign
+                            showResult()
+                            context.let {
+                                DataStoreHelper(context ?: return@let).saveData(
+                                    "MoonSign -> $moonSign $day/$month/$year"
+                                )
+                            }
                         }
                     }
-                }
-            ) { errorMessage ->
-                if (isActive) {
-                    Log.e("FetchMoonSign", errorMessage)
-                    binding.loading.isVisible = false
+                ) { errorMessage ->
+                    if (isActive) {
+                        Log.e("FetchMoonSign", errorMessage)
+                        binding.loading.isVisible = false
+                    }
                 }
             }
+        }
+        catch (e: Exception) {
+            print(e.stackTrace)
         }
     }
 

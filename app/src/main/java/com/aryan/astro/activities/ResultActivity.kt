@@ -35,6 +35,7 @@ class ResultActivity : AppCompatActivity() {
         binding.signImage.setImageResource(imageResource)
 
         binding.back.setOnClickListener {
+            finish()
             onBackPressedDispatcher.onBackPressed()
         }
 
