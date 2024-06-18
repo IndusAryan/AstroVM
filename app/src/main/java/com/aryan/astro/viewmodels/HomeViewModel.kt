@@ -1,4 +1,4 @@
-package com.aryan.astro.ui.models
+package com.aryan.astro.viewmodels
 
 import android.util.Log
 import androidx.lifecycle.LiveData

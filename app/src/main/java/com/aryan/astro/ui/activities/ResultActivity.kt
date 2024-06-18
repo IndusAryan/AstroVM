@@ -1,4 +1,4 @@
-package com.aryan.astro.activities
+package com.aryan.astro.ui.activities
 
 import android.content.Intent
 import android.graphics.Bitmap
@@ -35,6 +35,7 @@ class ResultActivity : AppCompatActivity() {
         binding.signImage.setImageResource(imageResource)
 
         binding.back.setOnClickListener {
+            finish()
             onBackPressedDispatcher.onBackPressed()
         }
 
@@ -46,13 +47,14 @@ class ResultActivity : AppCompatActivity() {
             val shareIntent = Intent(Intent.ACTION_SEND).apply {
                 putExtra(Intent.EXTRA_TEXT, "$description")
                 putExtra(Intent.EXTRA_STREAM, getImageUriFromBitmap(bitmap))
-                type = "image/*"
-            }
+               type = "image/*"
+        }
 
             val chooserIntent =
                 Intent.createChooser(shareIntent, "Share with")
             startActivity(chooserIntent)
         }
+
     }
 
     @Suppress("DEPRECATION")
@@ -60,7 +62,7 @@ class ResultActivity : AppCompatActivity() {
 
         if (bitmap != null) {
             val bytes = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.PNG, 50, bytes)
+            bitmap.compress(Bitmap.CompressFormat.PNG, 10, bytes)
             val path = MediaStore.Images.Media.insertImage(contentResolver, bitmap, "Title", null)
             return Uri.parse(path)
         }

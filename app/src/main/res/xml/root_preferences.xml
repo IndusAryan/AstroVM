@@ -28,12 +28,18 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="Device info">
+    <PreferenceCategory app:title="Info">
 
         <Preference
             app:key="deviceInfo"
             app:icon="@drawable/ic_android_black_24dp"
             app:summary="Info">
+        </Preference>
+
+        <Preference
+            app:key="history"
+            app:icon="@drawable/baseline_access_time_filled_24"
+            app:title="History">
         </Preference>
 
     <PreferenceCategory app:title="Experimental">

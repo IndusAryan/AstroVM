@@ -2,7 +2,7 @@ package com.aryan.astro.helpers
 
 import android.content.Context
 import android.content.Intent
-import com.aryan.astro.activities.ResultActivity
+import com.aryan.astro.ui.activities.ResultActivity
 
 class IntentHelper {
 
