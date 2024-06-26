@@ -5,7 +5,8 @@
     <string name="title_home">Home</string>
     <string name="title_moon">Moon</string>
     <string name="title_settings">Settings</string>
-
+    <string name="firebase_verified">Verified</string>
+    <string name="firebase_not_verified">Not verified</string>
     <!-- Zodiac Attributes for Sunsign -->
     <string name="zodDesc">Invalid Sun or Moon sign.</string>
     <string name="aries">Aries people are bold, energetic, full of vitality, charismatic, fun, lively, passionate, and driven by their hearts and desires. They have to feel ~all in~ on something to succeed in it, but, when they are, they are unstoppable. They thrive on competition, challenges, targets, and rivalry. Aries have a very warm and passionate nature. Their Mars ruler makes them competitive and full-on too. They have a big presence, they can light up a room. And, mostly, they’re lovely to be around because they genuinely care about other people.</string>
